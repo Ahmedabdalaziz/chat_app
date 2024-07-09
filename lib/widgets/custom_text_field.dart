@@ -10,11 +10,13 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final IconData? icon;
   final IconButton? suffixIcon;
+  final double? borderCircular;
+  final Function(String)? onSubmitted;
 
   const CustomTextField({
     super.key,
     required this.color,
-    required this.labelText,
+    this.labelText,
     this.obscureText = false,
     this.controller,
     this.validator,
@@ -22,11 +24,14 @@ class CustomTextField extends StatelessWidget {
     this.icon,
     this.onChange,
     this.suffixIcon,
+    this.onSubmitted,
+    this.borderCircular = 10,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onFieldSubmitted: onSubmitted,
       onChanged: onChange,
       controller: controller,
       obscureText: obscureText,
@@ -39,11 +44,11 @@ class CustomTextField extends StatelessWidget {
         labelStyle: TextStyle(color: color),
         prefixIcon: Icon(icon, color: color),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(borderCircular!),
           borderSide: BorderSide(color: color),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(borderCircular!),
           borderSide: BorderSide(color: color),
         ),
       ),

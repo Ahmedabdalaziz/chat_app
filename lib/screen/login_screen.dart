@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../constants_ui.dart';
+
+import '../constants.dart';
 import '../helper/login_firebase.dart';
 import '../helper/show_snack_bar.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/elevated_button.dart';
+import 'chat_page.dart';
 import 'sign_up_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -124,6 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     await Future.delayed(
                                         const Duration(seconds: 2));
 
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ChatPage(email: email,),
+                                      ),
+                                    );
+
                                     snackBar(
                                       context,
                                       message: 'Login Successful!',
@@ -135,57 +144,60 @@ class _LoginScreenState extends State<LoginScreen> {
                                     await Future.delayed(
                                         const Duration(seconds: 2));
 
-                                    switch (ex.code) {
-                                      case 'user-not-found':
-                                        snackBar(
-                                          context,
-                                          message:
-                                              'No user found for that email.',
-                                          colorOfMessage: kSecondColor,
-                                          colorOfText: kPrimaryColor,
-                                        );
-                                        break;
-                                      case 'wrong-password':
-                                        snackBar(
-                                          context,
-                                          message: 'Wrong password provided.',
-                                          colorOfMessage: kSecondColor,
-                                          colorOfText: kPrimaryColor,
-                                        );
-                                        break;
-                                      case 'invalid-email':
-                                        snackBar(
-                                          context,
-                                          message: 'Invalid email address.',
-                                          colorOfMessage: kSecondColor,
-                                          colorOfText: kPrimaryColor,
-                                        );
-                                        break;
-                                      case 'user-disabled':
-                                        snackBar(
-                                          context,
-                                          message: 'User disabled.',
-                                          colorOfMessage: kSecondColor,
-                                          colorOfText: kPrimaryColor,
-                                        );
-                                        break;
-                                      case 'too-many-requests':
-                                        snackBar(
-                                          context,
-                                          message:
-                                              'Too many login attempts. Please try again later.',
-                                          colorOfMessage: kSecondColor,
-                                          colorOfText: kPrimaryColor,
-                                        );
-                                        break;
-                                      default:
-                                        snackBar(
-                                          context,
-                                          message:
-                                              'Something is Wrong may your Email or Password are invalid.',
-                                          colorOfMessage: kSecondColor,
-                                          colorOfText: kPrimaryColor,
-                                        );
+                                    if (ex.code case "user-not-found") {
+                                      snackBar(
+                                        context,
+                                        message:
+                                            'No user found for that email.',
+                                        colorOfMessage: kSecondColor,
+                                        colorOfText: kPrimaryColor,
+                                      );
+                                    } else if (ex.code case "wrong-password") {
+                                      snackBar(
+                                        context,
+                                        message: 'Wrong password provided.',
+                                        colorOfMessage: kSecondColor,
+                                        colorOfText: kPrimaryColor,
+                                      );
+                                    } else if (ex.code case "invalid-email") {
+                                      snackBar(
+                                        context,
+                                        message: 'Invalid email address.',
+                                        colorOfMessage: kSecondColor,
+                                        colorOfText: kPrimaryColor,
+                                      );
+                                    } else if (ex.code case "user-disabled") {
+                                      snackBar(
+                                        context,
+                                        message: 'User disabled.',
+                                        colorOfMessage: kSecondColor,
+                                        colorOfText: kPrimaryColor,
+                                      );
+                                    } else if (ex.code
+                                        case 'too-many-requests') {
+                                      snackBar(
+                                        context,
+                                        message:
+                                            'Too many login attempts. Please try again later.',
+                                        colorOfMessage: kSecondColor,
+                                        colorOfText: kPrimaryColor,
+                                      );
+                                    } else if (ex.code
+                                        case 'network-request-failed') {
+                                      snackBar(
+                                        context,
+                                        message: 'network request failed.',
+                                        colorOfMessage: kSecondColor,
+                                        colorOfText: kPrimaryColor,
+                                      );
+                                    } else {
+                                      snackBar(
+                                        context,
+                                        message:
+                                            'Something is Wrong may your Email or Password are invalid.',
+                                        colorOfMessage: kSecondColor,
+                                        colorOfText: kPrimaryColor,
+                                      );
                                     }
                                   } finally {
                                     setState(() {
@@ -222,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context,
                                 CupertinoPageRoute(
                                   fullscreenDialog: true,
-                                  builder: (context) => SignUpScreen(),
+                                  builder: (context) => const SignUpScreen(),
                                 ),
                               );
                             },
@@ -230,7 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               "Sign Up",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: kThirdColor,
+                                color: kFourthColor,
                               ),
                             ),
                           ),

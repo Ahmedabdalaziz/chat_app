@@ -1,9 +1,10 @@
+import 'package:chat_app/screen/chat_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../constants_ui.dart';
+import '../constants.dart';
 import '../helper/show_snack_bar.dart';
 import '../helper/signup_firebase.dart';
 import '../widgets/custom_text_field.dart';
@@ -169,7 +170,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       colorOfText: kPrimaryColor,
                                     );
 
-                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChatPage(email: email),
+                                        ));
                                   } on FirebaseAuthException catch (ex) {
                                     await Future.delayed(
                                         const Duration(seconds: 2));
@@ -235,9 +241,4 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
-
-
-
 }
-
